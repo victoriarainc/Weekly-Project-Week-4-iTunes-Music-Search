@@ -19,7 +19,6 @@ document.querySelector(".search-form").addEventListener("submit", function(event
       // Check and make sure we got a status code of 200.  If not, display some
       // other error message
       response.json().then(function(data) {
-
         for (let i = 0; i < data.results.length; i++) {
           document.querySelector(".results").innerHTML +=
             `
