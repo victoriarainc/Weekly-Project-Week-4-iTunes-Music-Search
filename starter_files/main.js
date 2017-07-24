@@ -8,23 +8,17 @@
 // 4. Create a way to append the fetch results to your page
 // 5. Create a way to listen for a click that will play the song in the audio play
 
-console.log('Page Loading...');
 document.querySelector(".search-form").addEventListener("submit", function(event) {
 
-  console.log(event);
-
   let searchParam = document.querySelector("#searchBox").value.replace(' ', '+');
-  console.log(`Fetching Data from API: ${searchParam}`);
 
   fetch(
       `https://itunes.apple.com/search?term=${searchParam}`
     )
     .then(function(response) {
-      console.log(response);
       // Check and make sure we got a status code of 200.  If not, display some
       // other error message
       response.json().then(function(data) {
-        console.log(data);
 
         for (let i = 0; i < data.results.length; i++) {
           document.querySelector(".results").innerHTML +=
@@ -54,15 +48,17 @@ document.querySelector(".search-form").addEventListener("submit", function(event
 
 });
 
-audio = document.querySelector(".music-player");
+let audio = document.querySelector(".music-player");
 document.querySelector(".results").addEventListener("click", function (event) {
   if (event.target && event.target.matches("div.result img")) {
     let parent = event.target.parentElement;
-    console.log(parent);
+    audio.src = parent.getElementsByClassName('musicPreview')[0].innerHTML;
+    audio.play();
+    let songDisplay = document.querySelector('#currentSong');
 
-    url = parent.getElementsByClassName('musicPreview')[0].innerHTML;
-    console.log(url);
+    let artist = parent.getElementsByClassName('artist')[0].innerHTML;
+    let song = parent.getElementsByClassName('song')[0].innerHTML;
 
-    audio.src = url;
+    songDisplay.innerHTML = `Now Playing: ${artist} - ${song}`;
   }
 });
